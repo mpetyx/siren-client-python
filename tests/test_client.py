@@ -144,5 +144,3 @@ def test_convert_rel():
     assert sc.convert_rel('some_rel') == 'some_rel'
     assert sc.convert_rel('supersome_rel') == 'supersome_rel'
     assert sc.convert_rel('/super/some_rel') == 'some_rel'
-
-

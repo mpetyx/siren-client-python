@@ -63,7 +63,8 @@ class SirenAction(object):
                 self.values[field['name']] = field['value']
 
     def __repr__(self):
-        return '<SirenAction (%s)>' % ','.join([f['name'] for f in self.fields])
+        return '<SirenAction (%s)>' % ','.join([f['name']
+                                                for f in self.fields])
 
     def __call__(self, **kwargs):
         return self.call(**kwargs)
@@ -93,13 +94,14 @@ class SirenAction(object):
             'url': self.data['href'],
             }
         self.values.update(kwargs)
-        # 99.99% of API's will probably want these in the query string, regardless
+        # 99.99% of API's will probably want these in the query string
         if self.method in ['get', 'delete']:
             request_args['params'] = self.values
         else:
             request_args['headers'] = {'content-type': self.content_type}
             request_args['data'] = self.values
-        return SirenEntity(client=self.client, data=self.client.request(**request_args))
+        return SirenEntity(client=self.client,
+                           data=self.client.request(**request_args))
 
 
 class SirenEntity(dict):
@@ -160,7 +162,8 @@ class SirenEntity(dict):
         self.update(self.data.get('properties', {}))
 
     def __repr__(self):
-        return '<SirenEntity (class:%s) (%s)>' % (','.join(self.class_), self.uri)
+        return '<SirenEntity (class:%s) (%s)>' % (','.join(self.class_),
+                                                  self.uri)
 
     def __getattr__(self, item):
         if item not in self.siren:

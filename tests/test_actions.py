@@ -133,9 +133,11 @@ def test_action_three(parent_entity):
     response = parent_entity.actions['action-three'](Name='SomeName')
 
     assert response['Name'] == 'Response It.'
-    session.post.assert_called_with("http://api.x.io/actions/three",
+    session.post.assert_called_with(
+        "http://api.x.io/actions/three",
         data={'id': '23', 'Name': 'SomeName'},
-        headers={'content-type': 'application/x-www-form-urlencoded'})
+        headers={'content-type': 'application/x-www-form-urlencoded'}
+    )
 
 
 def test_action_four(parent_entity):
@@ -144,9 +146,11 @@ def test_action_four(parent_entity):
     response = parent_entity.actions['action-four'](Name='SomeName')
 
     assert response['Name'] == 'Response It.'
-    session.post.assert_called_with("http://api.x.io/actions/four",
+    session.post.assert_called_with(
+        "http://api.x.io/actions/four",
         data='{"id": "23", "Name": "SomeName"}',
-        headers={'content-type': 'application/json'})
+        headers={'content-type': 'application/json'}
+    )
 
 
 def test_action_five(parent_entity):
@@ -155,9 +159,11 @@ def test_action_five(parent_entity):
     response = parent_entity.actions['action-five'](Name='SomeName')
 
     assert response['Name'] == 'Response It.'
-    session.funky.assert_called_with("http://api.x.io/actions/five",
+    session.funky.assert_called_with(
+        "http://api.x.io/actions/five",
         data='{"id": "23", "Name": "SomeName"}',
-        headers={'content-type': 'application/json'})
+        headers={'content-type': 'application/json'}
+    )
 
 
 def test_action_six(parent_entity):
@@ -166,9 +172,11 @@ def test_action_six(parent_entity):
     response = parent_entity.actions['action-six'](Name='SomeName')
 
     assert response['Name'] == 'Response It.'
-    session.post.assert_called_with("http://api.x.io/actions/six",
+    session.post.assert_called_with(
+        "http://api.x.io/actions/six",
         data={'Name': 'SomeName'},
-        headers={'content-type': 'application/x-www-form-urlencoded'})
+        headers={'content-type': 'application/x-www-form-urlencoded'}
+    )
 
 
 def test_action_seven(parent_entity):
@@ -177,8 +185,9 @@ def test_action_seven(parent_entity):
 
     assert response['Name'] == 'Response It.'
     session.get.assert_called_with("http://api.x.io/actions/seven",
-                                    params={'Name': 'SomeName'},
-                                    data=None)
+                                   params={'Name': 'SomeName'},
+                                   data=None)
+
 
 def test_populate_action_one(parent_entity):
     session = parent_entity.client.session
@@ -198,9 +207,11 @@ def test_populate_action_three(parent_entity):
     response = parent_entity.actions['action-three'](desc='A Desc')
 
     assert response['Name'] == 'Response It.'
-    session.post.assert_called_with("http://api.x.io/actions/three",
+    session.post.assert_called_with(
+        "http://api.x.io/actions/three",
         data={'id': '23', 'desc': 'A Desc', 'Name': 'Parent'},
-        headers={'content-type': 'application/x-www-form-urlencoded'})
+        headers={'content-type': 'application/x-www-form-urlencoded'}
+    )
 
 
 def test_populate_action_six(parent_entity):
@@ -210,9 +221,11 @@ def test_populate_action_six(parent_entity):
     response = parent_entity.actions['action-six'](desc='A Desc')
 
     assert response['Name'] == 'Response It.'
-    session.post.assert_called_with("http://api.x.io/actions/six",
+    session.post.assert_called_with(
+        "http://api.x.io/actions/six",
         data={'desc': 'A Desc'},
-        headers={'content-type': 'application/x-www-form-urlencoded'})
+        headers={'content-type': 'application/x-www-form-urlencoded'}
+    )
 
 
 def test_populate_action_seven(parent_entity):
@@ -221,6 +234,8 @@ def test_populate_action_seven(parent_entity):
     response = parent_entity.actions['action-seven'](desc='Some Desc')
 
     assert response['Name'] == 'Response It.'
-    session.get.assert_called_with("http://api.x.io/actions/seven",
-                                    params={'desc': 'Some Desc'},
-                                    data=None)
+    session.get.assert_called_with(
+        "http://api.x.io/actions/seven",
+        params={'desc': 'Some Desc'},
+        data=None
+    )

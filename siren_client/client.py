@@ -25,7 +25,8 @@ class SirenClient(object):
         request = getattr(self.session, method)
         response = request(url, **kwargs)
         response.raise_for_status()
-        return self.loads(response.headers.get('content-type', None), response.content)
+        return self.loads(response.headers.get('content-type', None),
+                          response.content)
 
     def follow(self, url, method='get', **kwargs):
         return SirenEntity(self, self.request(url, method=method, **kwargs))

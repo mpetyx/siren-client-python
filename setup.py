@@ -49,8 +49,8 @@ setup(
     zip_safe=True,
     install_requires=[],
     extras_require={
-        'testing': ['pytest'],
+        'testing': ['pytest', 'mock', 'requests', 'simplejson'],
     },
-    tests_require=['pytest'],
+    tests_require=['pytest', 'mock', 'requests', 'simplejson'],
     cmdclass={'test': PyTest},
 )

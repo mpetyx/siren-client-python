@@ -10,7 +10,8 @@ def test_actions_repr():
 
 def test_action_repr():
     from siren_client.entity import SirenAction
-    sa = SirenAction(None, {'name': 'do-it', 'fields': [{'name': 'field_one'}]})
+    sa = SirenAction(None, {'name': 'do-it',
+                            'fields': [{'name': 'field_one'}]})
     assert str(sa) == '<SirenAction (field_one)>'
 
 
@@ -65,4 +66,3 @@ def test_entity_invalid_attribute():
     se = SirenEntity(None, {})
     with raises(AttributeError):
         se.invalid
-
