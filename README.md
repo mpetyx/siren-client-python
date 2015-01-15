@@ -2,7 +2,7 @@ Siren Client for Python
 =======================
 
 
-A generic client for consuming Hypermedia API's which utilise 
+A generic client for consuming Hypermedia API's which utilise
 [Siren](https://github.com/kevinswiber/siren) for the entity schema.
 
 The client consumes the Siren and creates objects which represent the various
@@ -100,13 +100,7 @@ Configuration can be provided to the `get` function earlier.
 
 ```python
 import siren_client
-
-my_config = {
-    'rel_base': 'https://my_api.com/rels/',
-}
-
-entity siren_client.get('http://my_url/', config=my_config)
-
+entity siren_client.get('http://my_url/', rel_base='https://my_api.com/rels/')
 ```
 
  - `rel_base` If set to a value, and this value is at the start of any rel
