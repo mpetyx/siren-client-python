@@ -2,7 +2,8 @@ Siren Client for Python
 =======================
 
 
-A generic client for consuming an Hypermedia API utilising Siren.
+A generic client for consuming Hypermedia API's which utilise 
+[Siren](https://github.com/kevinswiber/siren) for the entity schema.
 
 The client consumes the Siren and creates objects which represent the various
 Siren Objects. This library does not provide a transport mechanism to access the

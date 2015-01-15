@@ -39,7 +39,6 @@ class SirenLinks(dict):
         self.data = data
         for link in data:
             for rel in link['rel']:
-                print rel
                 rel = self.client.convert_rel(rel)
                 if rel in self:
                     raise SirenInvalid('The rel was not unique: %s' % rel)
