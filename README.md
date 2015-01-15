@@ -108,7 +108,7 @@ entity siren_client.get('http://my_url/', config=my_config)
 
 ```
 
-1. `rel_base` If set to a value, and this value is at the start of any rel
+ - `rel_base` If set to a value, and this value is at the start of any rel
     that rel will have that value removed:
 
     Example:
@@ -116,7 +116,7 @@ entity siren_client.get('http://my_url/', config=my_config)
     rel from the API (such as 'http://my.company/schema/my_link') to a
     shortened version (in this example: `my_link`)
 
-2. `dumps` Provide your own function for serialising any requests. By default
+ - `dumps` Provide your own function for serialising any requests. By default
     Siren Client will inspect the content type and automatically
     serialise into JSON as needed. The function will receive two
     parameters, the requested content type, and the data to serialise.
@@ -127,7 +127,7 @@ entity siren_client.get('http://my_url/', config=my_config)
         return converted_data
     ```
 
-3. `loads` Provide your own function for de-serialising any requests. By default
+ - `loads` Provide your own function for de-serialising any requests. By default
     Siren Client will inspect the content type and automatically
     de-serialise from JSON as needed. The function will receive two
     parameters, the requested content type, and the content to
@@ -139,7 +139,7 @@ entity siren_client.get('http://my_url/', config=my_config)
         return converted_data
     ```
 
-4. `self_rel` By default the Siren Client will calculate the canonical 'URI' of
+ - `self_rel` By default the Siren Client will calculate the canonical 'URI' of
     an entity from the link containing a rel called `self`. This
     parameter lets you change the rel that the library will use to
     determine the canonical 'URI'.
@@ -181,7 +181,7 @@ entity = siren_client.get('http://my.url.com/', session=session)
 
 ```python
 session = Session()
-session.headers['X-Pizze'] = 'pepperoni'
+session.headers['X-Pizza'] = 'pepperoni'
 entity = siren_client.get('http://my.url.com/', session=session)
 ```
 
