@@ -27,7 +27,7 @@ class PyTest(TestCommand):
 
 
 setup(
-    name='Siren Client',
+    name='siren-client',
     version=siren_client.__version__,
     description='Client for a Siren based Hypermedia API',
     long_description=README + '\n\n' + CHANGES,
