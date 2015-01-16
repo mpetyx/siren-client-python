@@ -1,7 +1,9 @@
 
 
 class SirenInvalid(Exception):
-    pass
+    def __init__(self, message, data=None):
+        Exception.__init__(self, message)
+        self.data = data
 
 
 class SirenActions(dict):
@@ -113,8 +115,11 @@ class SirenEntity(dict):
         self.client = client
         self.data = data
 
-        properties = data.get('properties', {})
-        dict.__init__(self, **properties)
+        try:
+            properties = data.get('properties', {})
+            dict.__init__(self, **properties)
+        except AttributeError, e:
+            raise SirenInvalid('Data is not a valid Siren Representation', data)
 
     @property
     def title(self):
