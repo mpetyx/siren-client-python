@@ -11,7 +11,7 @@ class SirenObject(object):
         '''Ensure that client does not get pickled'''
         state = self.__dict__.copy()
         if 'client' in state:
-            del state['client']
+            state['client'] = None
         return state
 
 
@@ -31,6 +31,10 @@ class SirenActions(SirenObject, dict):
             value = SirenAction(self.client, dict.__getitem__(self, item))
             self[item] = value
         return value
+
+    def items(self):
+        return [(key,self[key]) for key in self]
+
 
 
 class SirenEntities(SirenObject, list):
@@ -61,6 +65,9 @@ class SirenLinks(SirenObject, dict):
     def __getitem__(self, item):
         uri = dict.__getitem__(self, item)
         return self.client.follow(uri)
+
+    def items(self):
+        return [(key,self[key]) for key in self]
 
 
 class SirenAction(SirenObject):
