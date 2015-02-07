@@ -10,12 +10,17 @@ DEFAULT_CONFIG = {
 
 
 class SirenClient(object):
+
     def __init__(self, session, config=None):
         self.config = {}
         self.config.update(DEFAULT_CONFIG)
         if config is not None:
             self.config.update(config)
         self.session = session
+
+    def __getstate__(self):
+        '''Prevent any accidental pickling of this object'''
+        raise ValueError, 'SirenClient should not be pickled'
 
     def request(self, url, method='get', **kwargs):
         if 'data' in kwargs:
