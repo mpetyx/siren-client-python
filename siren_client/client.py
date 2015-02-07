@@ -6,6 +6,7 @@ DEFAULT_CONFIG = {
     'loads': None,
     'dumps': None,
     'self_rel': 'self',
+    'raise_for_status': True,
 }
 
 
@@ -29,7 +30,8 @@ class SirenClient(object):
 
         request = getattr(self.session, method)
         response = request(url, **kwargs)
-        response.raise_for_status()
+        if self.config['raise_for_status']:
+            response.raise_for_status()
         return self.loads(response.headers.get('content-type', None),
                           response.content)
 
