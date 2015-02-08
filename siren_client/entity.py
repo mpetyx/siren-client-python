@@ -6,7 +6,16 @@ class SirenInvalid(Exception):
         self.data = data
 
 
-class SirenActions(dict):
+class SirenObject(object):
+    def __getstate__(self):
+        '''Ensure that client does not get pickled'''
+        state = self.__dict__.copy()
+        if 'client' in state:
+            state['client'] = None
+        return state
+
+
+class SirenActions(SirenObject, dict):
     def __init__(self, client, data):
         self.client = client
         self.data = data
@@ -23,8 +32,12 @@ class SirenActions(dict):
             self[item] = value
         return value
 
+    def items(self):
+        return [(key,self[key]) for key in self]
 
-class SirenEntities(list):
+
+
+class SirenEntities(SirenObject, list):
     def __init__(self, client, data):
         self.client = client
         self.data = data
@@ -35,7 +48,7 @@ class SirenEntities(list):
         return '<SirenEntities (%d)>' % len(self)
 
 
-class SirenLinks(dict):
+class SirenLinks(SirenObject, dict):
     def __init__(self, client, data):
         self.client = client
         self.data = data
@@ -53,8 +66,11 @@ class SirenLinks(dict):
         uri = dict.__getitem__(self, item)
         return self.client.follow(uri)
 
+    def items(self):
+        return [(key,self[key]) for key in self]
 
-class SirenAction(object):
+
+class SirenAction(SirenObject):
     def __init__(self, client, data):
         self.client = client
         self.data = data
@@ -105,7 +121,7 @@ class SirenAction(object):
                            data=self.client.request(**request_args))
 
 
-class SirenEntity(dict):
+class SirenEntity(SirenObject, dict):
     def __init__(self, client, data):
         self.siren = {
             'entities': None,
@@ -169,19 +185,23 @@ class SirenEntity(dict):
         return '<SirenEntity (class:%s) (%s)>' % (','.join(self.class_),
                                                   self.uri)
 
-    def __getattr__(self, item):
-        if item not in self.siren:
-            raise AttributeError("%r object has no attribute %r" %
-                                 (self.__class__, item))
-        if self.siren[item] is None:
-            self.siren[item] = getattr(self, '_create_%s' % item)()
-        return self.siren[item]
+    def _make_and_cache(self, name, factory):
+        obj = self.siren.get(name, None)
+        if obj is None:
+            obj = factory(self.client, 
+                          self.data.get(name, []))
+            self.siren[name] = obj
+        return obj
 
-    def _create_links(self):
-        return SirenLinks(self.client, self.data.get('links', []))
+    @property
+    def links(self):
+        return self._make_and_cache('links', SirenLinks)
 
-    def _create_actions(self):
-        return SirenActions(self.client, self.data.get('actions', []))
+    @property
+    def actions(self):
+        return self._make_and_cache('actions', SirenActions)
 
-    def _create_entities(self):
-        return SirenEntities(self.client, self.data.get('entities', []))
+    @property
+    def entities(self):
+        return self._make_and_cache('entities', SirenEntities)
+

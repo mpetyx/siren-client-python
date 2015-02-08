@@ -6,16 +6,22 @@ DEFAULT_CONFIG = {
     'loads': None,
     'dumps': None,
     'self_rel': 'self',
+    'raise_for_status': True,
 }
 
 
 class SirenClient(object):
+
     def __init__(self, session, config=None):
         self.config = {}
         self.config.update(DEFAULT_CONFIG)
         if config is not None:
             self.config.update(config)
         self.session = session
+
+    def __getstate__(self):
+        '''Prevent any accidental pickling of this object'''
+        raise ValueError, 'SirenClient should not be pickled'
 
     def request(self, url, method='get', **kwargs):
         if 'data' in kwargs:
@@ -24,7 +30,8 @@ class SirenClient(object):
 
         request = getattr(self.session, method)
         response = request(url, **kwargs)
-        response.raise_for_status()
+        if self.config['raise_for_status']:
+            response.raise_for_status()
         return self.loads(response.headers.get('content-type', None),
                           response.content)
 
