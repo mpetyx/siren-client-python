@@ -30,6 +30,9 @@ class SirenClient(object):
 
         request = getattr(self.session, method)
         response = request(url, **kwargs)
+        if response.body is None or len(response.body) == 0:
+            if 'location' in response.headers:
+                return self.request('get', response.headers['location'])
         if self.config['raise_for_status']:
             response.raise_for_status()
         return self.loads(response.headers.get('content-type', None),
