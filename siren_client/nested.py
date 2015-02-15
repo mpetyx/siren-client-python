@@ -9,6 +9,7 @@ with the extension that if each field starts with a [] it
 transforms into a list instead
 '''
 from collections import OrderedDict
+import copy
 
 
 def group_elements(source):
@@ -25,8 +26,9 @@ def group_elements(source):
             remainder = '[' + remainder
         if name not in names:
             names[name] = []
-        item['name'] = remainder
-        names[name].append(item)
+        new_item = copy.copy(item)
+        new_item['name'] = remainder
+        names[name].append(new_item)
     return names
 
 

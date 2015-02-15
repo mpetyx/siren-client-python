@@ -28,9 +28,10 @@ class SirenClient(object):
             content_type = kwargs.get('headers', {}).get('content-type', None)
             kwargs['data'] = self.dumps(content_type, kwargs['data'])
 
+
         request = getattr(self.session, method)
         response = request(url, **kwargs)
-        if response.body is None or len(response.body) == 0:
+        if response.text is None or len(response.text) == 0:
             if 'location' in response.headers:
                 return self.request('get', response.headers['location'])
         if self.config['raise_for_status']:
