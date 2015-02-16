@@ -1,3 +1,4 @@
+from .nested import transform
 
 
 class SirenInvalid(Exception):
@@ -34,7 +35,6 @@ class SirenActions(SirenObject, dict):
 
     def items(self):
         return [(key,self[key]) for key in self]
-
 
 
 class SirenEntities(SirenObject, list):
@@ -97,6 +97,10 @@ class SirenAction(SirenObject):
         return self.data.get('fields', [])
 
     @property
+    def nested_fields(self):
+        return transform(self.fields)
+
+    @property
     def content_type(self):
         return self.data.get('type', 'application/x-www-form-urlencoded')
 
@@ -104,19 +108,31 @@ class SirenAction(SirenObject):
     def method(self):
         return self.data.get('method', 'GET').lower()
 
-    def call(self, **kwargs):
+    def call(self, *args, **kwargs):
+        '''Call the action with the required Arguments.
+
+        If a non-named parameter is passed, it will be used as the data
+        with out considering the defaults values
+        '''
+        if len(args) > 2:
+            raise TypeError, 'call() takes no more than 1 positional argument'
+        elif len(args) == 1:
+            values = args[0]
+        else:
+            values = self.values
+
         request_args = {
             'data': None,
             'method': self.method,
             'url': self.data['href'],
             }
-        self.values.update(kwargs)
+        values.update(kwargs)
         # 99.99% of API's will probably want these in the query string
         if self.method in ['get', 'delete']:
-            request_args['params'] = self.values
+            request_args['params'] = values
         else:
             request_args['headers'] = {'content-type': self.content_type}
-            request_args['data'] = self.values
+            request_args['data'] = values
         return SirenEntity(client=self.client,
                            data=self.client.request(**request_args))
 
@@ -188,7 +204,7 @@ class SirenEntity(SirenObject, dict):
     def _make_and_cache(self, name, factory):
         obj = self.siren.get(name, None)
         if obj is None:
-            obj = factory(self.client, 
+            obj = factory(self.client,
                           self.data.get(name, []))
             self.siren[name] = obj
         return obj
